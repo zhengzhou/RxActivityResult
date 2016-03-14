@@ -38,7 +38,7 @@ Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/
 ```java
 Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-RxActivityResult.startIntent(takePhoto, this)
+RxActivityResult.startIntent(takePhoto, getActivity())
         .subscribe(result -> {
             Intent data = result.data();
             int resultCode = result.resultCode();
