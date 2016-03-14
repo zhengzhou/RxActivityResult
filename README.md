@@ -32,8 +32,8 @@ dependencies {
 
 Usage
 =====
-Create an instance of the Intent you want to launch and supply it -with a valid reference to the current activity, to the static [RxActivityResult.startIntent]() method.
-Observe the emitted [Result]() item to know the resultCode and retrieve the associated data if appropriate.  
+Create an instance of the Intent you want to launch and supply it -with a valid reference to the current activity, to the static [RxActivityResult.startIntent](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/RxActivityResult.java#L35) method.
+Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/Result.java) item to know the resultCode and retrieve the associated data if appropriate.  
 
 ```java
 Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
