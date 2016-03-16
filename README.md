@@ -46,7 +46,7 @@ public class SampleApp extends Application {
 }
 ```
 
-You can call [RxActivityResult.on(this).startIntent(intent)](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/RxActivityResult.java) supplying both, an activity instance or a fragment instance.
+You can call RxActivityResult.on(this).startIntent(intent) supplying both, an activity instance or a fragment instance.
 Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/Result.java) item to know the resultCode and retrieve the associated data if appropriate.  
 
 
