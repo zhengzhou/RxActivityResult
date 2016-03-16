@@ -68,7 +68,7 @@ RxActivityResult.on(this).startIntent(takePhoto)
 
 Please pay attention to the targetUI() method in the Result object emitted. 
 
-This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafety calling it. 
+This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafe calling it. 
 
 Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the Result object.  
 
