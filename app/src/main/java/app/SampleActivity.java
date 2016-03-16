@@ -11,27 +11,26 @@ import android.widget.Toast;
 import io.victoralbertos.app.R;
 import rx_activity_result.RxActivityResult;
 
-public class MainActivity extends AppCompatActivity {
+public class SampleActivity extends AppCompatActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.sample_layout);
 
         findViewById(R.id.bt_camera).setOnClickListener(view -> camera());
     }
 
     private void camera() {
         Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        RxActivityResult.startIntent(takePhoto, this)
+        RxActivityResult.on(this).startIntent(takePhoto)
                 .subscribe(result -> {
                     Intent data = result.data();
                     int resultCode = result.resultCode();
 
                     if (resultCode == RESULT_OK) {
-                        showImage(data);
+                        result.targetUI().showImage(data);
                     } else {
-                        printUserCanceled();
+                        result.targetUI().printUserCanceled();
                     }
                 });
     }

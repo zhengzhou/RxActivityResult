@@ -18,30 +18,33 @@ package rx_activity_result;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 public class HolderActivity extends Activity {
     private static Request request;
     private OnResult onResult;
+    private int resultCode;
+    private Intent data;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         onResult = request.onResult();
-        startActivityForResult(request.intent(), 0);
-    }
-
-    @Override public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
+        if (savedInstanceState == null)
+            startActivityForResult(request.intent(), 0);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        onResult.response(new Result(resultCode, data));
+        this.resultCode = resultCode;
+        this.data = data;
 
         finish();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+        onResult.response(resultCode, data);
     }
 
     static void setRequest(Request aRequest) {

@@ -18,13 +18,13 @@ package rx_activity_result;
 
 import android.content.Intent;
 
-import java.io.Serializable;
-
-public class Result implements Serializable {
+public class Result<T> {
+    private final T targetUI;
     private final int resultCode;
     private final Intent data;
 
-    public Result(int resultCode, Intent data) {
+    public Result(T targetUI, int resultCode, Intent data) {
+        this.targetUI = targetUI;
         this.resultCode = resultCode;
         this.data = data;
     }
@@ -35,5 +35,9 @@ public class Result implements Serializable {
 
     public Intent data() {
         return data;
+    }
+
+    public T targetUI() {
+        return targetUI;
     }
 }

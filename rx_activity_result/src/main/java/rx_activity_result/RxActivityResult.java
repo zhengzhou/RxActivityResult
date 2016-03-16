@@ -17,37 +17,101 @@
 package rx_activity_result;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
 
 public class RxActivityResult {
-    public static Observable<Result> startIntent(Intent intent, Activity hostActivity) {
-        RxActivityResult rxActivityResult = new RxActivityResult();
-        return rxActivityResult.startForResult(intent, hostActivity);
+    private static ActivitiesLifecycleCallbacks activitiesLifecycle;
+
+    public static void register(final Application application) {
+        activitiesLifecycle = new ActivitiesLifecycleCallbacks(application);
     }
 
-    private Subscriber<? super Result> subscriber;
+    public static <T extends Activity> Builder<T> on(T activity) {
+        return new Builder<T>(activity);
+    }
 
-    private RxActivityResult() {}
+    public static <T extends Fragment> Builder<T> on(T fragment) {
+        return new Builder<T>(fragment);
+    }
 
-    private Observable<Result> startForResult(final Intent intent, Activity activity) {
-        Observable<Result> observable = Observable.create(new Observable.OnSubscribe<Result>() {
-            @Override public void call(Subscriber<? super Result> subscriber) {
-                RxActivityResult.this.subscriber = subscriber;
+    public static class Builder<T> {
+        private final Class clazz;
+        private Subscriber<? super Result<T>> subscriber;
+        private final boolean uiTargetActivity;
+
+        public Builder(T t) {
+            if (activitiesLifecycle == null) {
+                throw new IllegalStateException(Locale.RX_ACTIVITY_RESULT_NOT_REGISTER);
             }
-        });
 
-        HolderActivity.setRequest(new Request(intent, new OnResult() {
-            @Override public void response(Result result) {
-                subscriber.onNext(result);
-                subscriber.onCompleted();
-            }
-        }));
+            this.clazz = t.getClass();
+            this.uiTargetActivity = t instanceof Activity;
+        }
 
-        activity.startActivity(new Intent(activity, HolderActivity.class));
+        public Observable<Result<T>> startIntent(final Intent intent) {
+            Observable<Result<T>> observable = Observable.create(new Observable.OnSubscribe<Result<T>>() {
+                @Override public void call(Subscriber<? super Result<T>> aSubscriber) {
+                    subscriber = aSubscriber;
+                }
+            });
 
-        return observable;
+            OnResult onResult = uiTargetActivity ? onResultActivity() : onResultFragment();
+            HolderActivity.setRequest(new Request(intent, onResult));
+
+            Activity activity = activitiesLifecycle.getLiveActivity();
+            activity.startActivity(new Intent(activity, HolderActivity.class));
+
+            return observable;
+        }
+
+        private OnResult onResultActivity() {
+            return new OnResult() {
+                @Override public void response(int resultCode, Intent data) {
+                    if (activitiesLifecycle.getLiveActivity() == null) return;
+
+                    if (activitiesLifecycle.getLiveActivity().getClass() != clazz) {
+                        throw new IllegalStateException(Locale.ACTIVITY_MISMATCH_TARGET_UI);
+                    }
+
+                    T activity = (T) activitiesLifecycle.getLiveActivity();
+                    subscriber.onNext(new Result<T>((T) activity, resultCode, data));
+                }
+            };
+        }
+
+        private OnResult onResultFragment() {
+            return new OnResult() {
+                @Override public void response(int resultCode, Intent data) {
+                    if (activitiesLifecycle.getLiveActivity() == null) return;
+
+                    Activity activity = activitiesLifecycle.getLiveActivity();
+
+                    FragmentActivity fragmentActivity = (FragmentActivity) activity;
+                    FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
+
+                    List<Fragment> fragments = fragmentManager.getFragments();
+
+                    if(fragments != null) {
+                        for(Fragment fragment : fragments){
+                            if(fragment != null && fragment.isVisible() && fragment.getClass() == clazz) {
+                                subscriber.onNext(new Result<T>((T) fragment, resultCode, data));
+                                return;
+                            }
+                        }
+                    }
+
+                    throw new IllegalStateException(Locale.FRAGMENT_MISMATCH_TARGET_UI);
+                }
+            };
+        }
     }
 }

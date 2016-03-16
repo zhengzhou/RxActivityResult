@@ -6,7 +6,7 @@ I did this library to not have to deal with this OnActivityResult pattern. Never
 
 RxActivityResult features:
 --------------------------
-* Launch the intent from any class, as long as you supply a valid activity instance.
+* Launch the intent from any class, as long as you supply a valid activity or fragment instance.
 * Get the intent back with the data encapsulated in an observable and keep going crazy chaining operations. 
 
 Setup
@@ -25,35 +25,54 @@ allprojects {
 And add next dependencies in the build.gradle of the module:
 ```gradle
 dependencies {
-    compile "com.github.VictorAlbertos:RxActivityResult:0.1"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.2"
     compile "io.reactivex:rxjava:1.1.0"
 }
 ```
 
 Usage
 =====
-Create an instance of the Intent you want to launch and supply it -with a valid reference to the current activity, to the static [RxActivityResult.startIntent](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/RxActivityResult.java#L35) method.
+Call RxActivityResult.register in your Android Application class, supplying as parameter the current Android Application instance.
+        
+```java
+public class SampleApp extends Application {
+
+    @Override public void onCreate() {
+        super.onCreate();
+        RxActivityResult.register(this);
+    }
+}
+```
+
+You can call [RxActivityResult.on(this).startIntent(intent)](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/RxActivityResult.java) supplying both, an activity instance or a fragment instance.
 Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/Result.java) item to know the resultCode and retrieve the associated data if appropriate.  
+
 
 ```java
 Intent takePhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-RxActivityResult.startIntent(takePhoto, this)
+RxActivityResult.on(this).startIntent(takePhoto)
         .subscribe(result -> {
             Intent data = result.data();
             int resultCode = result.resultCode();
-            
+
             if (resultCode == RESULT_OK) {
-                showImage(data);
+                result.targetUI().showImage(data);
             } else {
-                printUserCanceled();
+                result.targetUI().printUserCanceled();
             }
         });
 ```
 
+Please pay attention to the targetUI() method in the Result object emitted. 
+
+This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafety calling it. 
+
+Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the Result object.  
+
 Examples
 --------
-There is an example of RxActivityResult in the [app module](https://github.com/VictorAlbertos/RxActivityResult/tree/master/app)
+There is an example of RxActivityResult using both activity and fragment in the [app module](https://github.com/VictorAlbertos/RxActivityResult/tree/master/app)
 
 Author
 -------

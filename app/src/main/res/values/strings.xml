@@ -2,6 +2,7 @@
     <string name="app_name">RxActivityResult</string>
     <string name="action_settings">Settings</string>
     <string name="camera">Camera</string>
-    <string name="gallery">Gallery</string>
     <string name="user_canceled_action">User canceled action</string>
+    <string name="using_activity">Using activity</string>
+    <string name="using_fragment">Using fragment</string>
 </resources>
