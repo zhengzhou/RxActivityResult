@@ -46,7 +46,7 @@ public class SampleApp extends Application {
 }
 ```
 
-You can call [RxActivityResult.on(this).startIntent(intent)](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/RxActivityResult.java) supplying both, an activity instance or a fragment instance.
+You can call RxActivityResult.on(this).startIntent(intent) supplying both, an activity instance or a fragment instance.
 Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/Result.java) item to know the resultCode and retrieve the associated data if appropriate.  
 
 
@@ -68,7 +68,7 @@ RxActivityResult.on(this).startIntent(takePhoto)
 
 Please pay attention to the targetUI() method in the Result object emitted. 
 
-This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafety calling it. 
+This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafe calling it. 
 
 Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the Result object.  
 
