@@ -84,6 +84,7 @@ public class RxActivityResult {
 
                     T activity = (T) activitiesLifecycle.getLiveActivity();
                     subscriber.onNext(new Result<T>((T) activity, resultCode, data));
+                    subscriber.onCompleted();
                 }
             };
         }
@@ -104,6 +105,7 @@ public class RxActivityResult {
                         for(Fragment fragment : fragments){
                             if(fragment != null && fragment.isVisible() && fragment.getClass() == clazz) {
                                 subscriber.onNext(new Result<T>((T) fragment, resultCode, data));
+                                subscriber.onCompleted();
                                 return;
                             }
                         }
