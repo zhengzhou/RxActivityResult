@@ -78,8 +78,10 @@ public class RxActivityResult {
                 @Override public void response(int resultCode, Intent data) {
                     if (activitiesLifecycle.getLiveActivity() == null) return;
 
+                    //If true it means some other activity has been stacked as a secondary process.
+                    //Wait until the current activity be the target activity
                     if (activitiesLifecycle.getLiveActivity().getClass() != clazz) {
-                        throw new IllegalStateException(Locale.ACTIVITY_MISMATCH_TARGET_UI);
+                        return;
                     }
 
                     T activity = (T) activitiesLifecycle.getLiveActivity();
@@ -111,7 +113,8 @@ public class RxActivityResult {
                         }
                     }
 
-                    throw new IllegalStateException(Locale.FRAGMENT_MISMATCH_TARGET_UI);
+                    //If code reaches this point it means some other activity has been stacked as a secondary process.
+                    //Wait until the current activity be the target activity to get the associated fragment
                 }
             };
         }
