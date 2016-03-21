@@ -27,6 +27,7 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
 
 public class RxActivityResult {
     private static ActivitiesLifecycleCallbacks activitiesLifecycle;
@@ -67,8 +68,11 @@ public class RxActivityResult {
             OnResult onResult = uiTargetActivity ? onResultActivity() : onResultFragment();
             HolderActivity.setRequest(new Request(intent, onResult));
 
-            Activity activity = activitiesLifecycle.getLiveActivity();
-            activity.startActivity(new Intent(activity, HolderActivity.class));
+            activitiesLifecycle.getOLiveActivity().subscribe(new Action1<Activity>() {
+                @Override public void call(Activity activity) {
+                    activity.startActivity(new Intent(activity, HolderActivity.class));
+                }
+            });
 
             return observable;
         }

@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.functions.Func1;
+
 class ActivitiesLifecycleCallbacks {
     private final Application application;
     private Activity liveActivityOrNull;
@@ -45,4 +50,33 @@ class ActivitiesLifecycleCallbacks {
     Activity getLiveActivity() {
         return liveActivityOrNull;
     }
+
+    /**
+     * Emits just one time a valid reference to the current activity
+     * @return the current activity
+     */
+    private boolean emitted = false;
+    Observable<Activity> getOLiveActivity() {
+        emitted = false;
+        return Observable.interval(50, 50, TimeUnit.MILLISECONDS)
+                .map(new Func1<Long, Activity>() {
+                    @Override public Activity call(Long aLong) {
+                        return liveActivityOrNull;
+                    }
+                })
+                .takeWhile(new Func1<Activity, Boolean>() {
+                    @Override public Boolean call(Activity activity) {
+                        boolean continueEmitting = true;
+                        if (emitted) continueEmitting = false;
+                        if (activity != null) emitted = true;
+                        return continueEmitting;
+                    }
+                })
+                .filter(new Func1<Activity, Boolean>() {
+                    @Override public Boolean call(Activity activity) {
+                        return activity != null;
+                    }
+                });
+    }
+
 }
