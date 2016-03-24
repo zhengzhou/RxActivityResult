@@ -18,10 +18,11 @@ android {
 
     defaultConfig {
         applicationId "io.victoralbertos.app"
-        minSdkVersion 16
+        minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -47,4 +48,26 @@ dependencies {
     compile 'io.reactivex:rxjava:1.1.0'
 
     testCompile 'junit:junit:4.12'
+    androidTestCompile ("com.android.support.test:runner:0.4.1") {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ("com.android.support.test:rules:0.4.1") {
+        exclude module: 'support-annotations'
+    }
+
+    androidTestCompile ("com.android.support.test.espresso:espresso-intents:2.2.1") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile ("com.android.support.test.espresso:espresso-contrib:2.2.1") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+        exclude module: 'support-v13'
+        exclude module: 'recyclerview-v7'
+    }
+
+    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.1'
 }
