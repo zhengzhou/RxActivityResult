@@ -4,12 +4,12 @@ RxActivityResult
 ================
 The api which Android SDK exposes to retrieve the data from a 'returning system call' (camera, gallery, email...) just does not give a shit about [Don't break the chain](http://blog.danlew.net/2015/03/02/dont-break-the-chain) leitmotiv. Indeed, the [OnActivityResult](http://developer.android.com/intl/es/training/basics/intents/result.html) approach will break entirely your observable chaining. 
 
-I did this library to not have to deal with this OnActivityResult pattern. Never. Ever.  
+I did this library to not have to deal with this `OnActivityResult` pattern. Never. Ever.  
 
 RxActivityResult features:
 --------------------------
-* Launch the intent from any class, as long as you supply a valid activity or fragment instance.
-* Get the intent back with the data encapsulated in an observable and keep going crazy chaining operations. 
+* Launch the intent from any class, as long as you supply a valid `Activity` or `Fragment` instance.
+* Get the `Intent` back with the data encapsulated in an `observable` and keep going crazy chaining operators. 
 
 Setup
 -----
@@ -34,7 +34,7 @@ dependencies {
 
 Usage
 =====
-Call RxActivityResult.register in your Android Application class, supplying as parameter the current Android Application instance.
+Call `RxActivityResult.register` in your Android `Application` class, supplying as parameter the current instance.
         
 ```java
 public class SampleApp extends Application {
@@ -46,7 +46,7 @@ public class SampleApp extends Application {
 }
 ```
 
-You can call RxActivityResult.on(this).startIntent(intent) supplying both, an activity instance or a fragment instance.
+You can call `RxActivityResult.on(this).startIntent(intent)` supplying both, an `Activity` instance or a `Fragment` instance.
 Observe the emitted [Result](https://github.com/VictorAlbertos/RxActivityResult/blob/master/rx_activity_result/src/main/java/rx_activity_result/Result.java) item to know the resultCode and retrieve the associated data if appropriate.  
 
 
@@ -66,11 +66,11 @@ RxActivityResult.on(this).startIntent(takePhoto)
         });
 ```
 
-Please pay attention to the targetUI() method in the Result object emitted. 
+Please pay attention to the `targetUI()` method in the `Result` object emitted. 
 
-This method returns a safety instance of the current Activity/Fragment. Because the original instance of the Activity/Fragment may be recreated (due to configuration changes or some other system events) it would be unsafe calling it. 
+This method returns a safety instance of the current `Activity`/`Fragment`. Because the original one may be recreated (due to configuration changes or some other system events) it would be unsafe calling it. 
 
-Instead, you must call any method/variable of your Activity/Fragment from this instance encapsulated in the Result object.  
+Instead, you must call any method/variable of your `Activity`/`Fragment` from this instance encapsulated in the `Result` object.  
 
 Examples
 --------
