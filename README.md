@@ -71,7 +71,7 @@ Instead, you must call any method/variable of your `Activity`/`Fragment` from th
 RxActivityResult supports [startIntentSenderForResult](http://developer.android.com/intl/es/reference/android/app/Activity.html#startIntentSenderForResult) too, by calling `RxActivityResult.on(this).startIntentSender` and supplying the proper arguments. As follows: 
 
 ```java
-RxActivityResult.on(this).startIntentSender(pendingIntent.getIntentSender(), new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0))
+RxActivityResult.on(this).startIntentSender(pendingIntent.getIntentSender(), new Intent(), 0, 0, 0)
         .subscribe(result -> {
             
         });
