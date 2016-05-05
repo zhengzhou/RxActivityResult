@@ -87,4 +87,5 @@ Author
 Another author's libraries using RxJava:
 ----------------------------------------
 * [RxCache](https://github.com/VictorAlbertos/RxCache): Reactive caching library for Android and Java.
+* [RxPaparazzo](https://github.com/FuckBoilerplate/RxPaparazzo): RxJava extension for Android to take images using camera and gallery.
 * [RxGcm](https://github.com/VictorAlbertos/RxGcm): A reactive wrapper for Android Google Cloud Messaging to get rid of Service(s) configuration, handling foreground and background notifications depending on application state.
