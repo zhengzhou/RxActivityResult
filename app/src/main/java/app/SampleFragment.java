@@ -1,6 +1,7 @@
 package app;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class SampleFragment extends Fragment {
     @Override public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getView().findViewById(R.id.bt_camera).setOnClickListener(view -> camera());
+        getView().findViewById(R.id.bt_intent_sender).setOnClickListener(v -> intentSender());
     }
 
     private void camera() {
@@ -48,7 +50,18 @@ public class SampleFragment extends Fragment {
         ((ImageView) getView().findViewById(R.id.iv_thumbnail)).setImageBitmap(imageBitmap);
     }
 
+    private void intentSender() {
+        Intent intent  = new Intent("sample.intentsender.intent.AN_INTENT");
+        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 1, intent, 0);
+
+        RxActivityResult.on(this).startIntentSender(pendingIntent.getIntentSender(), new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0))
+                .subscribe(result -> {
+                    if (result.resultCode() != Activity.RESULT_OK) result.targetUI().printUserCanceled();
+                });
+    }
+
     private void printUserCanceled() {
         Toast.makeText(getActivity(), getString(R.string.user_canceled_action), Toast.LENGTH_LONG).show();
     }
+
 }

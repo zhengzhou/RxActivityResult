@@ -1,19 +1,15 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-RxActivityResult-green.svg?style=true)](https://android-arsenal.com/details/1/3284)
 
-RxActivityResult
-================
+# RxActivityResult
 The api which Android SDK exposes to retrieve the data from a 'returning system call' (camera, gallery, email...) just does not give a shit about [Don't break the chain](http://blog.danlew.net/2015/03/02/dont-break-the-chain) leitmotiv. Indeed, the [OnActivityResult](http://developer.android.com/intl/es/training/basics/intents/result.html) approach will break entirely your observable chaining. 
 
 I did this library to not have to deal with this `OnActivityResult` pattern. Never. Ever.  
 
-RxActivityResult features:
---------------------------
+## RxActivityResult features:
 * Launch the intent from any class, as long as you supply a valid `Activity` or `Fragment` instance.
 * Get the `Intent` back with the data encapsulated in an `observable` and keep going crazy chaining operators. 
 
-Setup
------
-
+## Setup
 Add the JitPack repository in your build.gradle (top level module):
 ```gradle
 allprojects {
@@ -27,13 +23,12 @@ allprojects {
 And add next dependencies in the build.gradle of the module:
 ```gradle
 dependencies {
-    compile "com.github.VictorAlbertos:RxActivityResult:0.2.3"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.0"
     compile "io.reactivex:rxjava:1.1.0"
 }
 ```
 
-Usage
-=====
+## Usage
 Call `RxActivityResult.register` in your Android `Application` class, supplying as parameter the current instance.
         
 ```java
@@ -72,12 +67,20 @@ This method returns a safety instance of the current `Activity`/`Fragment`. Beca
 
 Instead, you must call any method/variable of your `Activity`/`Fragment` from this instance encapsulated in the `Result` object.  
 
-Examples
---------
+### StartIntentSenderForResult
+RxActivityResult supports [startIntentSenderForResult](http://developer.android.com/intl/es/reference/android/app/Activity.html#startIntentSenderForResult) too, by calling `RxActivityResult.on(this).startIntentSender` and supplying the proper arguments. As follows: 
+
+```java
+RxActivityResult.on(this).startIntentSender(pendingIntent.getIntentSender(), new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0))
+        .subscribe(result -> {
+            
+        });
+```
+
+## Examples
 There is an example of RxActivityResult using both activity and fragment in the [app module](https://github.com/VictorAlbertos/RxActivityResult/tree/master/app)
 
-Author
--------
+## Author
 **Víctor Albertos**
 
 * <https://twitter.com/_victorAlbertos>

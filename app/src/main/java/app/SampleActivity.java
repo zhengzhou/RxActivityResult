@@ -1,5 +1,6 @@
 package app;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ public class SampleActivity extends AppCompatActivity {
         setContentView(R.layout.sample_layout);
 
         findViewById(R.id.bt_camera).setOnClickListener(view -> camera());
+        findViewById(R.id.bt_intent_sender).setOnClickListener(v -> intentSender());
     }
 
     private void camera() {
@@ -38,6 +40,16 @@ public class SampleActivity extends AppCompatActivity {
     private void showImage(Intent data) {
         Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
         ((ImageView) findViewById(R.id.iv_thumbnail)).setImageBitmap(imageBitmap);
+    }
+
+    private void intentSender() {
+        Intent intent  = new Intent("sample.intentsender.intent.AN_INTENT");
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 1, intent, 0);
+
+        RxActivityResult.on(this).startIntentSender(pendingIntent.getIntentSender(), new Intent(), Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0))
+                .subscribe(result -> {
+                    if (result.resultCode() != RESULT_OK) result.targetUI().printUserCanceled();
+                });
     }
 
     private void printUserCanceled() {

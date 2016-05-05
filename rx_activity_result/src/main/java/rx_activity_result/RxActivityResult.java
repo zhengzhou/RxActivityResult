@@ -19,6 +19,9 @@ package rx_activity_result;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -58,7 +61,20 @@ public class RxActivityResult {
             this.uiTargetActivity = t instanceof Activity;
         }
 
+        public Observable<Result<T>> startIntentSender(IntentSender intentSender, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags) {
+            return startIntentSender(intentSender, fillInIntent, flagsMask, flagsValues, extraFlags, null);
+        }
+
+        public Observable<Result<T>> startIntentSender(IntentSender intentSender, @Nullable Intent fillInIntent, int flagsMask, int flagsValues, int extraFlags, Bundle options) {
+            RequestIntentSender requestIntentSender = new RequestIntentSender(intentSender, fillInIntent, flagsMask, flagsValues, extraFlags, options);
+            return startHolderActivity(requestIntentSender);
+        }
+
         public Observable<Result<T>> startIntent(final Intent intent) {
+            return startHolderActivity(new Request(intent));
+        }
+
+        private Observable<Result<T>> startHolderActivity(Request request) {
             Observable<Result<T>> observable = Observable.create(new Observable.OnSubscribe<Result<T>>() {
                 @Override public void call(Subscriber<? super Result<T>> aSubscriber) {
                     subscriber = aSubscriber;
@@ -66,7 +82,9 @@ public class RxActivityResult {
             });
 
             OnResult onResult = uiTargetActivity ? onResultActivity() : onResultFragment();
-            HolderActivity.setRequest(new Request(intent, onResult));
+            request.setOnResult(onResult);
+
+            HolderActivity.setRequest(request);
 
             activitiesLifecycle.getOLiveActivity().subscribe(new Action1<Activity>() {
                 @Override public void call(Activity activity) {

@@ -5,4 +5,5 @@
     <string name="user_canceled_action">User canceled action</string>
     <string name="using_activity">Using activity</string>
     <string name="using_fragment">Using fragment</string>
+    <string name="intent_sender">Intent sender</string>
 </resources>

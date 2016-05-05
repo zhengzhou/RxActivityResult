@@ -13,6 +13,13 @@
             <option value="$PROJECT_DIR$/rx_activity_result" />
           </set>
         </option>
+        <option name="myModules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/rx_activity_result" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

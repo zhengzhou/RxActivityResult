@@ -38,6 +38,7 @@ public class ApplicationTest {
     @Test public void CheckActivity() {
         onView(withId(R.id.bt_activity)).perform(click());
         takePhoto();
+        checkIntentSender();
     }
 
     @Test public void CheckActivityCancelUserAction() {
@@ -48,6 +49,7 @@ public class ApplicationTest {
     @Test public void CheckFragment() {
         onView(withId(R.id.bt_fragment)).perform(click());
         takePhoto();
+        checkIntentSender();
     }
 
     @Test public void CheckFragmentCancelUserAction() {
@@ -72,7 +74,12 @@ public class ApplicationTest {
                 return imageView.getDrawable() != null;
             }
         }));
-    } 
+    }
+
+    private void checkIntentSender() {
+        onView(withId(R.id.bt_intent_sender)).perform(click());
+        waitTime();
+    }
 
     private void cancelUserAction() {
         onView(withId(R.id.bt_camera)).perform(click());
