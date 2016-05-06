@@ -72,8 +72,6 @@ public class SampleParentFragmentNested extends Fragment {
             Toast.makeText(getActivity(), getString(R.string.user_canceled_action), Toast.LENGTH_LONG).show();
         }
     }
-
-
 }
 
 

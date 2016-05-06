@@ -123,22 +123,32 @@ public class RxActivityResult {
                     FragmentActivity fragmentActivity = (FragmentActivity) activity;
                     FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
 
-                    List<Fragment> fragments = fragmentManager.getFragments();
+                    Fragment targetFragment = getTargetFragment(fragmentManager.getFragments());
 
-                    if(fragments != null) {
-                        for(Fragment fragment : fragments){
-                            if(fragment != null && fragment.isVisible() && fragment.getClass() == clazz) {
-                                subscriber.onNext(new Result<T>((T) fragment, resultCode, data));
-                                subscriber.onCompleted();
-                                return;
-                            }
-                        }
+                    if(targetFragment != null) {
+                        subscriber.onNext(new Result<T>((T) targetFragment, resultCode, data));
+                        subscriber.onCompleted();
                     }
 
                     //If code reaches this point it means some other activity has been stacked as a secondary process.
-                    //Wait until the current activity be the target activity to get the associated fragment
+                    //Do nothing until the current activity be the target activity to get the associated fragment
                 }
             };
+        }
+
+        @Nullable private Fragment getTargetFragment(List<Fragment> fragments) {
+            if (fragments == null) return null;
+
+            for (Fragment fragment : fragments) {
+                if(fragment != null && fragment.isVisible() && fragment.getClass() == clazz) {
+                    return fragment;
+                } else if (fragment.getChildFragmentManager() != null) {
+                    List<Fragment> childFragments = fragment.getChildFragmentManager().getFragments();
+                    return getTargetFragment(childFragments);
+                }
+            }
+
+            return null;
         }
     }
 }

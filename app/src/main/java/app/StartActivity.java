@@ -19,5 +19,9 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.bt_fragment).setOnClickListener(view -> {
             startActivity(new Intent(StartActivity.this, HostActivitySampleFragment.class));
         });
+
+        findViewById(R.id.bt_fragment_nested).setOnClickListener(view -> {
+            startActivity(new Intent(StartActivity.this, HostActivitySampleFragmentNested.class));
+        });
     }
 }

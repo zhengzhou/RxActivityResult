@@ -57,6 +57,17 @@ public class ApplicationTest {
         cancelUserAction();
     }
 
+    @Test public void CheckNestedFragment() {
+        onView(withId(R.id.bt_fragment_nested)).perform(click());
+        takePhoto();
+        checkIntentSender();
+    }
+
+    @Test public void CheckNestedFragmentCancelUserAction() {
+        onView(withId(R.id.bt_fragment_nested)).perform(click());
+        cancelUserAction();
+    }
+
     private void takePhoto() {
         onView(withId(R.id.bt_camera)).perform(click());
         waitTime();

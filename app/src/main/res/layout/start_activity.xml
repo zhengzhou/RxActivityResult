@@ -16,4 +16,10 @@
         android:layout_height="wrap_content"
         android:text="@string/using_fragment" />
 
+    <Button
+        android:id="@+id/bt_fragment_nested"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/using_nested_fragment" />
+
 </LinearLayout>
