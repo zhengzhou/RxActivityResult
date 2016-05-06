@@ -142,7 +142,7 @@ public class RxActivityResult {
             for (Fragment fragment : fragments) {
                 if(fragment != null && fragment.isVisible() && fragment.getClass() == clazz) {
                     return fragment;
-                } else if (fragment.getChildFragmentManager() != null) {
+                } else if (fragment != null && fragment.getChildFragmentManager() != null) {
                     List<Fragment> childFragments = fragment.getChildFragmentManager().getFragments();
                     return getTargetFragment(childFragments);
                 }
