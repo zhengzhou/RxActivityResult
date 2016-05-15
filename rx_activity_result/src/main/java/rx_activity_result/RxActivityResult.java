@@ -144,7 +144,8 @@ public class RxActivityResult {
                     return fragment;
                 } else if (fragment != null && fragment.getChildFragmentManager() != null) {
                     List<Fragment> childFragments = fragment.getChildFragmentManager().getFragments();
-                    return getTargetFragment(childFragments);
+                    Fragment candidate = getTargetFragment(childFragments);
+                    if (candidate != null) return candidate;
                 }
             }
 
