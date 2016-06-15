@@ -31,6 +31,7 @@ import java.util.List;
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
+import rx.subjects.PublishSubject;
 
 public class RxActivityResult {
     private static ActivitiesLifecycleCallbacks activitiesLifecycle;
@@ -49,7 +50,7 @@ public class RxActivityResult {
 
     public static class Builder<T> {
         private final Class clazz;
-        private Subscriber<? super Result<T>> subscriber;
+        PublishSubject<Result<T>> subject = PublishSubject.create();
         private final boolean uiTargetActivity;
 
         public Builder(T t) {
@@ -75,11 +76,6 @@ public class RxActivityResult {
         }
 
         private Observable<Result<T>> startHolderActivity(Request request) {
-            Observable<Result<T>> observable = Observable.create(new Observable.OnSubscribe<Result<T>>() {
-                @Override public void call(Subscriber<? super Result<T>> aSubscriber) {
-                    subscriber = aSubscriber;
-                }
-            });
 
             OnResult onResult = uiTargetActivity ? onResultActivity() : onResultFragment();
             request.setOnResult(onResult);
@@ -92,7 +88,7 @@ public class RxActivityResult {
                 }
             });
 
-            return observable;
+            return subject.asObservable();
         }
 
         private OnResult onResultActivity() {
@@ -107,8 +103,8 @@ public class RxActivityResult {
                     }
 
                     T activity = (T) activitiesLifecycle.getLiveActivity();
-                    subscriber.onNext(new Result<T>((T) activity, resultCode, data));
-                    subscriber.onCompleted();
+                    subject.onNext(new Result<T>((T) activity, resultCode, data));
+                    subject.onCompleted();
                 }
             };
         }
@@ -126,8 +122,8 @@ public class RxActivityResult {
                     Fragment targetFragment = getTargetFragment(fragmentManager.getFragments());
 
                     if(targetFragment != null) {
-                        subscriber.onNext(new Result<T>((T) targetFragment, resultCode, data));
-                        subscriber.onCompleted();
+                        subject.onNext(new Result<T>((T) targetFragment, resultCode, data));
+                        subject.onCompleted();
                     }
 
                     //If code reaches this point it means some other activity has been stacked as a secondary process.
