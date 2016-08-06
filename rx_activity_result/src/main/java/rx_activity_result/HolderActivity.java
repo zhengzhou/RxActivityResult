@@ -30,6 +30,11 @@ public class HolderActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (request == null) {
+            finish();
+            return;
+        }
+
         onResult = request.onResult();
 
         if (savedInstanceState != null) return;
@@ -76,7 +81,8 @@ public class HolderActivity extends Activity {
 
     @Override protected void onDestroy() {
         super.onDestroy();
-        onResult.response(resultCode, data);
+        if (onResult != null)
+            onResult.response(resultCode, data);
     }
 
     static void setRequest(Request aRequest) {

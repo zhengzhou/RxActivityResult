@@ -26,8 +26,8 @@ allprojects {
 And add next dependencies in the build.gradle of the module:
 ```gradle
 dependencies {
-    compile "com.github.VictorAlbertos:RxActivityResult:0.3.4"
-    compile "io.reactivex:rxjava:1.1.5"
+    compile "com.github.VictorAlbertos:RxActivityResult:0.3.5"
+    compile "io.reactivex:rxjava:1.1.8"
 }
 ```
 
