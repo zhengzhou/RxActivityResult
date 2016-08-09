@@ -33,6 +33,9 @@
             android:name="app.SampleActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="app.MultiStartActivity" />
+        <activity android:name="app.FirstActivity"/>
+        <activity android:name="app.SecondActivity"/>
     </application>
 
 </manifest>
