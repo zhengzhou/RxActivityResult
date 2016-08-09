@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import app.multi_start.MultiStartActivity;
 import io.victoralbertos.app.R;
 
 
@@ -23,5 +24,10 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.bt_fragment_nested).setOnClickListener(view -> {
             startActivity(new Intent(StartActivity.this, HostActivitySampleFragmentNested.class));
         });
+
+        findViewById(R.id.bt_multi_start).setOnClickListener(view -> {
+            startActivity(new Intent(StartActivity.this, MultiStartActivity.class));
+        });
+
     }
 }

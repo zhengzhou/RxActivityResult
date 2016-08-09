@@ -3,6 +3,7 @@ package app;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import app.multi_start.MultiStartActivity;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
