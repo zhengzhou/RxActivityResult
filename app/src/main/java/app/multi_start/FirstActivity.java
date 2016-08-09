@@ -1,22 +1,20 @@
-package app;
+package app.multi_start;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import io.victoralbertos.app.R;
 
-public class SecondActivity extends AppCompatActivity {
+public class FirstActivity extends AppCompatActivity {
 
     public static final String EXTRA = "EXTRA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_second);
 
         Intent data = new Intent();
-        data.putExtra(EXTRA, "Well done second");
+        data.putExtra(EXTRA, "Well done first");
         setResult(RESULT_OK, data);
         finish();
     }

@@ -33,9 +33,9 @@
             android:name="app.SampleActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="app.MultiStartActivity" />
-        <activity android:name="app.FirstActivity"/>
-        <activity android:name="app.SecondActivity"/>
+        <activity android:name="app.multi_start.MultiStartActivity" />
+        <activity android:name="app.multi_start.FirstActivity"/>
+        <activity android:name="app.multi_start.SecondActivity"/>
     </application>
 
 </manifest>
