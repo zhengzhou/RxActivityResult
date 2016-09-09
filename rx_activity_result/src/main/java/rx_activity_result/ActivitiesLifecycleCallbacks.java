@@ -3,11 +3,10 @@ package rx_activity_result;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-
+import io.reactivex.Observable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.functions.Func1;
 
 class ActivitiesLifecycleCallbacks {
     private final Application application;
@@ -59,22 +58,28 @@ class ActivitiesLifecycleCallbacks {
     Observable<Activity> getOLiveActivity() {
         emitted = false;
         return Observable.interval(50, 50, TimeUnit.MILLISECONDS)
-                .map(new Func1<Long, Activity>() {
-                    @Override public Activity call(Long aLong) {
+                .map(new Function<Long, Object>() {
+                    @Override public Object apply(Long aLong) throws Exception {
+                        if (liveActivityOrNull == null) return 0;
                         return liveActivityOrNull;
                     }
                 })
-                .takeWhile(new Func1<Activity, Boolean>() {
-                    @Override public Boolean call(Activity activity) {
+                .takeWhile(new Predicate<Object>() {
+                    @Override public boolean test(Object candidate) throws Exception {
                         boolean continueEmitting = true;
                         if (emitted) continueEmitting = false;
-                        if (activity != null) emitted = true;
+                        if (candidate instanceof Activity) emitted = true;
                         return continueEmitting;
                     }
                 })
-                .filter(new Func1<Activity, Boolean>() {
-                    @Override public Boolean call(Activity activity) {
-                        return activity != null;
+                .filter(new Predicate<Object>() {
+                    @Override public boolean test(Object candidate) throws Exception {
+                        return candidate instanceof Activity;
+                    }
+                })
+                .map(new Function<Object, Activity>() {
+                    @Override public Activity apply(Object activity) throws Exception {
+                        return (Activity) activity;
                     }
                 });
     }

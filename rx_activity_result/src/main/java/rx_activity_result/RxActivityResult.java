@@ -26,12 +26,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
-import rx.subjects.PublishSubject;
 
 public class RxActivityResult {
     private static ActivitiesLifecycleCallbacks activitiesLifecycle;
@@ -82,13 +81,13 @@ public class RxActivityResult {
 
             HolderActivity.setRequest(request);
 
-            activitiesLifecycle.getOLiveActivity().subscribe(new Action1<Activity>() {
-                @Override public void call(Activity activity) {
+            activitiesLifecycle.getOLiveActivity().subscribe(new Consumer<Activity>() {
+                @Override public void accept(Activity activity) throws Exception {
                     activity.startActivity(new Intent(activity, HolderActivity.class));
                 }
             });
 
-            return subject.asObservable();
+            return subject;
         }
 
         private OnResult onResultActivity() {
@@ -104,7 +103,7 @@ public class RxActivityResult {
 
                     T activity = (T) activitiesLifecycle.getLiveActivity();
                     subject.onNext(new Result<T>((T) activity, resultCode, data));
-                    subject.onCompleted();
+                    subject.onComplete();
                 }
             };
         }
@@ -123,7 +122,7 @@ public class RxActivityResult {
 
                     if(targetFragment != null) {
                         subject.onNext(new Result<T>((T) targetFragment, resultCode, data));
-                        subject.onCompleted();
+                        subject.onComplete();
                     }
 
                     //If code reaches this point it means some other activity has been stacked as a secondary process.
