@@ -48,8 +48,8 @@ public class RxActivityResult {
     }
 
     public static class Builder<T> {
-        private final Class clazz;
-        PublishSubject<Result<T>> subject = PublishSubject.create();
+        final Class clazz;
+        final PublishSubject<Result<T>> subject = PublishSubject.create();
         private final boolean uiTargetActivity;
 
         public Builder(T t) {
