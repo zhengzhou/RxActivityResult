@@ -25,11 +25,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-
 import java.util.List;
-
 import rx.Observable;
-import rx.Subscriber;
 import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 
@@ -49,8 +46,8 @@ public class RxActivityResult {
     }
 
     public static class Builder<T> {
-        private final Class clazz;
-        PublishSubject<Result<T>> subject = PublishSubject.create();
+        final Class clazz;
+        final PublishSubject<Result<T>> subject = PublishSubject.create();
         private final boolean uiTargetActivity;
 
         public Builder(T t) {
