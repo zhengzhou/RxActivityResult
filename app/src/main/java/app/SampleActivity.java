@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import io.victoralbertos.app.R;
-import rx_activity_result.RxActivityResult;
+import rx_activity_result2.RxActivityResult;
 
 public class SampleActivity extends AppCompatActivity {
 

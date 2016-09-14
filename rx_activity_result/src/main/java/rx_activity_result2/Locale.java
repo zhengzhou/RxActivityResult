@@ -1,4 +1,4 @@
-package rx_activity_result;
+package rx_activity_result2;
 
 /**
  * Created by victor on 16/03/16.

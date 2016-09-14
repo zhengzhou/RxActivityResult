@@ -2,7 +2,7 @@ package app;
 
 import android.app.Application;
 
-import rx_activity_result.RxActivityResult;
+import rx_activity_result2.RxActivityResult;
 
 public class SampleApp extends Application {
 

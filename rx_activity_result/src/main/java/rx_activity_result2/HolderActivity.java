@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package rx_activity_result;
+package rx_activity_result2;
 
 import android.app.Activity;
 import android.content.Intent;

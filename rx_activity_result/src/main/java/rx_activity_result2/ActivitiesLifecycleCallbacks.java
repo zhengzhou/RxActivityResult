@@ -1,4 +1,4 @@
-package rx_activity_result;
+package rx_activity_result2;
 
 import android.app.Activity;
 import android.app.Application;

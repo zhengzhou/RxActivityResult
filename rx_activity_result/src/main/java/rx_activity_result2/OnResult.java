@@ -1,4 +1,4 @@
-package rx_activity_result;
+package rx_activity_result2;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;

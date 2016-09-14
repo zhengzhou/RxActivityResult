@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.victoralbertos.app.R;
-import rx_activity_result.RxActivityResult;
+import rx_activity_result2.RxActivityResult;
 
 public class MultiStartActivity extends AppCompatActivity {
     private TextView firstResult;
