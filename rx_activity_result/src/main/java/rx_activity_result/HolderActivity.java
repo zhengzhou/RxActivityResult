@@ -21,8 +21,13 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 public class HolderActivity extends Activity {
     private static Request request;
+    private OnPreResult onPreResult;
     private OnResult onResult;
     private int resultCode;
     private Intent data;
@@ -35,6 +40,7 @@ public class HolderActivity extends Activity {
             return;
         }
 
+        onPreResult = request.onPreResult();
         onResult = request.onResult();
 
         if (savedInstanceState != null) return;
@@ -76,7 +82,18 @@ public class HolderActivity extends Activity {
         this.resultCode = resultCode;
         this.data = data;
 
-        finish();
+        if (this.onPreResult != null) {
+            this.onPreResult.response(resultCode, data)
+                .doOnCompleted(new Action0() {
+                    @Override
+                    public void call() {
+                        finish();
+                    }
+                })
+                .subscribe();
+        } else {
+            finish();
+        }
     }
 
     @Override protected void onDestroy() {
