@@ -72,11 +72,11 @@ public class RxActivityResult {
             return startIntent(intent, null);
         }
 
-        public Observable<Result<T>> startIntent(final Intent intent, OnResult onPreResult) {
+        public Observable<Result<T>> startIntent(final Intent intent, OnPreResult onPreResult) {
             return startHolderActivity(new Request(intent), onPreResult);
         }
 
-        private Observable<Result<T>> startHolderActivity(Request request, OnResult onPreResult) {
+        private Observable<Result<T>> startHolderActivity(Request request, OnPreResult onPreResult) {
 
             OnResult onResult = uiTargetActivity ? onResultActivity() : onResultFragment();
             request.setOnResult(onResult);

@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import app.multi_start.MultiStartActivity;
 import io.victoralbertos.app.R;
 
 import static android.support.test.espresso.Espresso.onView;

@@ -20,18 +20,18 @@ import android.content.Intent;
 
 class Request {
     private final Intent intent;
-    private OnResult onPreResult;
+    private OnPreResult onPreResult;
     private OnResult onResult;
 
     Request(Intent intent) {
         this.intent = intent;
     }
 
-    void setOnPreResult(OnResult onPreResult) {
+    void setOnPreResult(OnPreResult onPreResult) {
         this.onPreResult = onPreResult;
     }
 
-    OnResult onPreResult() {
+    OnPreResult onPreResult() {
         return onPreResult;
     }
 

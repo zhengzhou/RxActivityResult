@@ -2,15 +2,13 @@ package app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
 import app.multi_start.FirstActivity;
-import app.multi_start.SecondActivity;
 import io.victoralbertos.app.R;
-import rx_activity_result.OnResult;
+import rx.Observable;
 import rx_activity_result.RxActivityResult;
 
 public class OnPreResultActivity extends AppCompatActivity {
@@ -29,13 +27,14 @@ public class OnPreResultActivity extends AppCompatActivity {
 
         startPreForResult.setOnClickListener(v ->
             RxActivityResult.on(this)
-                .startIntent(new Intent(this, FirstActivity.class), (OnResult) (resultCode, data) ->
-                    data.putExtra(EXTRA_PRE, "Do whatever you want with the data, but not with the UI"))
+                .startIntent(new Intent(this, FirstActivity.class), (resultCode, data) ->
+                        Observable.just(data.getData())
+                                .map(uri -> data.putExtra(EXTRA_PRE, "Do whatever you want with the data, but not with the UI")))
                 .subscribe(result -> {
                     result.targetUI()
-                        .preResult.setText(result.data().getStringExtra(EXTRA_PRE));
+                            .preResult.setText(result.data().getStringExtra(EXTRA_PRE));
                     result.targetUI()
-                        .result.setText(result.data().getStringExtra(FirstActivity.EXTRA));
+                            .result.setText(result.data().getStringExtra(FirstActivity.EXTRA));
                 })
         );
     }

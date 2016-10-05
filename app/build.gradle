@@ -18,12 +18,20 @@ android {
 
     defaultConfig {
         applicationId "io.victoralbertos.app"
-        minSdkVersion 14
+        minSdkVersion 16
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+//    productFlavors {
+//        production {
+//            minSdkVersion 16
+//        }
+//        uiTest {
+//            minSdkVersion 18
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled false
