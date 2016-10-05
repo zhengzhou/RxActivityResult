@@ -23,6 +23,7 @@ import android.os.Bundle;
 
 public class HolderActivity extends Activity {
     private static Request request;
+    private OnResult onPreResult;
     private OnResult onResult;
     private int resultCode;
     private Intent data;
@@ -35,6 +36,7 @@ public class HolderActivity extends Activity {
             return;
         }
 
+        onPreResult = request.onPreResult();
         onResult = request.onResult();
 
         if (savedInstanceState != null) return;
@@ -75,6 +77,10 @@ public class HolderActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         this.resultCode = resultCode;
         this.data = data;
+
+        if (this.onPreResult != null) {
+            this.onPreResult.response(resultCode, data);
+        }
 
         finish();
     }

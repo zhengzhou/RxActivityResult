@@ -5,6 +5,6 @@ import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 
-interface OnResult extends Serializable {
+public interface OnResult extends Serializable {
     void response(int resultCode, @Nullable Intent data);
 }
