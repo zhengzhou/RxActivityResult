@@ -1,9 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.victoralbertos.rxactivityresult">
 
-    <application
-        android:allowBackup="true"
-        android:supportsRtl="true">
+    <application>
         <activity
             android:name="rx_activity_result.HolderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
