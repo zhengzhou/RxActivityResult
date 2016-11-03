@@ -19,11 +19,11 @@ package rx_activity_result;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 
 import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class HolderActivity extends Activity {
     private static Request request;
@@ -48,8 +48,11 @@ public class HolderActivity extends Activity {
         if (request instanceof RequestIntentSender) {
             RequestIntentSender requestIntentSender = (RequestIntentSender) request;
 
-            if (requestIntentSender.getOptions() == null) startIntentSender(requestIntentSender);
-            else startIntentSenderWithOptions(requestIntentSender);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && requestIntentSender.getOptions() != null) {
+                startIntentSenderWithOptions(requestIntentSender);
+            } else {
+                startIntentSender(requestIntentSender);
+            }
         } else {
             startActivityForResult(request.intent(), 0);
         }
@@ -66,6 +69,7 @@ public class HolderActivity extends Activity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void startIntentSenderWithOptions(RequestIntentSender requestIntentSender) {
         try {
             startIntentSenderForResult(requestIntentSender.getIntentSender(), 0,
